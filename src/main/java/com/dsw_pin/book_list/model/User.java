@@ -3,6 +3,8 @@ package com.dsw_pin.book_list.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -29,6 +31,11 @@ public class User {
         READER,
         ADMIN
     }
+
+    //um usuario mtas reviews uma review um usuario
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Review> reviews = new HashSet<>();
 
     public UUID getId() {
         return id;
@@ -68,5 +75,13 @@ public class User {
 
     public void setTipo(TipoUsuario tipo) {
         this.tipo = tipo;
+    }
+
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
     }
 }

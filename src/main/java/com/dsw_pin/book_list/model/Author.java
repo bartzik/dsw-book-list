@@ -2,6 +2,8 @@ package com.dsw_pin.book_list.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -14,6 +16,9 @@ public class Author {
 
     @Column(nullable = false)
     private String name;
+
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
+    private Set<Book> books = new HashSet<>();
 
     public UUID getId() {
         return id;
@@ -29,5 +34,13 @@ public class Author {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 }
