@@ -1,5 +1,7 @@
 package com.dsw_pin.book_list.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -25,6 +27,7 @@ public class Book {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id") //  chave estrangeira
+    @JsonBackReference
     private Publisher publisher;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
