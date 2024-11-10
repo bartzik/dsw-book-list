@@ -31,6 +31,14 @@ public class User {
         READER,
         ADMIN
     }
+    public boolean isAdmin() {
+        return this.tipo == TipoUsuario.ADMIN;
+    }
+
+    public boolean isReader() {
+        return this.tipo == TipoUsuario.READER;
+    }
+
 
     //um usuario mtas reviews uma review um usuario
 

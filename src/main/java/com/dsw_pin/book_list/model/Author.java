@@ -1,5 +1,6 @@
 package com.dsw_pin.book_list.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -17,7 +18,9 @@ public class Author {
     @Column(nullable = false)
     private String name;
 
+
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
+    @JsonBackReference
     private Set<Book> books = new HashSet<>();
 
     public UUID getId() {

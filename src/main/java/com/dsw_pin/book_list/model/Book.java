@@ -2,6 +2,7 @@ package com.dsw_pin.book_list.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -25,20 +26,22 @@ public class Book {
     @Column
     private String summary;
 
+
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id") //  chave estrangeira
-    @JsonBackReference
     private Publisher publisher;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private Set<Review> reviews = new HashSet<>();
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "TB_BOOK_AUTHOR",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
-
+    @JsonManagedReference
     private Set<Author> authors = new HashSet<>();
 
 

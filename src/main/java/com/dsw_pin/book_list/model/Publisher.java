@@ -1,5 +1,6 @@
 package com.dsw_pin.book_list.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -18,8 +19,8 @@ public class Publisher {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY)
     @JsonManagedReference
+    @OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY)
     private Set<Book> books = new HashSet<>();
 
     public UUID getId() {

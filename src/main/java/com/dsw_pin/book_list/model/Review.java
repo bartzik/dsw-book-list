@@ -14,7 +14,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500) // Limita o tamanho do comentário a 500 caracteres
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,6 +24,15 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Review(String comment, Book book, User user) {
+        this.comment = comment;
+        this.book = book;
+        this.user = user;
+    }
+
+    public Review() {
+    }
 
     public UUID getId() {
         return id;
