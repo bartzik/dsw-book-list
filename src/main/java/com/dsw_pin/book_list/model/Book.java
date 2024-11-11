@@ -33,6 +33,8 @@ public class Book {
     private Publisher publisher;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @JsonIgnore
     private Set<Review> reviews = new HashSet<>();
 
 
@@ -41,6 +43,7 @@ public class Book {
             name = "TB_BOOK_AUTHOR",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
+
     @JsonManagedReference
     private Set<Author> authors = new HashSet<>();
 

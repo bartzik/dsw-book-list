@@ -11,10 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +28,10 @@ public class BookService {
 
     public List<Book> getAllBooks(){
         return bookRepository.findAll();
+    }
+
+    public Optional<Book> getBookById(UUID id){
+        return bookRepository.findById(id);
     }
 
 
@@ -65,4 +66,6 @@ public class BookService {
     public void deleteBook(UUID id){
         bookRepository.deleteById(id);
     }
+
+
 }

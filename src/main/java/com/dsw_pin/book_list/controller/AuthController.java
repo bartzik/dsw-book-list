@@ -8,15 +8,8 @@ import com.dsw_pin.book_list.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.crypto.bcrypt.BCrypt;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.mindrot.jbcrypt.BCrypt;
-
-
-
-
-
 
 import java.util.Date;
 import java.util.HashMap;
@@ -34,11 +27,18 @@ public class AuthController {
     @Autowired
     private SessaoRepository sessaoRepository;
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
+        String email = credentials.get("email");
+        String password = credentials.get("password");
+
+        // Verifique se os valores não são nulos
+        if (email == null || password == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email e senha são obrigatórios.");
+        }
+
         // Busca o usuário no banco de dados pelo email
         Optional<User> userOpt = userRepository.findByEmail(email);
 
@@ -58,12 +58,13 @@ public class AuthController {
                 Map<String, String> response = new HashMap<>();
                 response.put("sessionId", sessionId);
                 response.put("userType", user.getTipo().toString());
+                response.put("userId", user.getId().toString());
                 return ResponseEntity.ok(response);
             } else {
-                return ResponseEntity.status(401).body("Credenciais inválidas");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
             }
         } else {
-            return ResponseEntity.status(401).body("Credenciais inválidas");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
         }
     }
 

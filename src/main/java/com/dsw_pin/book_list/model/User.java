@@ -1,6 +1,7 @@
 package com.dsw_pin.book_list.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -31,6 +32,18 @@ public class User {
         READER,
         ADMIN
     }
+
+    public User() {
+        // Construtor padrão
+    }
+
+    public User(String name, String email, String password, TipoUsuario tipo) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.tipo = tipo;
+    }
+
     public boolean isAdmin() {
         return this.tipo == TipoUsuario.ADMIN;
     }
@@ -43,6 +56,7 @@ public class User {
     //um usuario mtas reviews uma review um usuario
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<Review> reviews = new HashSet<>();
 
     public UUID getId() {

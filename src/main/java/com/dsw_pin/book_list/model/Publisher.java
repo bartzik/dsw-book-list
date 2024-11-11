@@ -1,6 +1,7 @@
 package com.dsw_pin.book_list.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -20,6 +21,7 @@ public class Publisher {
     private String name;
 
     @JsonManagedReference
+    @JsonIgnore
     @OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY)
     private Set<Book> books = new HashSet<>();
 
