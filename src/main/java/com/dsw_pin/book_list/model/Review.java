@@ -29,7 +29,7 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
 //    @JsonBackReference
-    @JsonIgnore
+//    @JsonIgnore
     private User user;
 
     public Review(String comment, Book book, User user) {

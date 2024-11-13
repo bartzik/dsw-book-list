@@ -1,5 +1,6 @@
 package com.dsw_pin.book_list.controller;
 
+import com.dsw_pin.book_list.dtos.ReviewRecordDto;
 import com.dsw_pin.book_list.model.Review;
 import com.dsw_pin.book_list.model.User;
 import com.dsw_pin.book_list.model.Book;
@@ -7,7 +8,9 @@ import com.dsw_pin.book_list.repositories.ReviewRepository;
 import com.dsw_pin.book_list.repositories.BookRepository;
 import com.dsw_pin.book_list.repositories.UserRepository;
 
+import com.dsw_pin.book_list.services.ReviewService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -69,10 +72,14 @@ public class ReviewController {
     }
 
 
+    @Autowired
+    private ReviewService reviewService;
+
     @GetMapping("/{bookId}")
-    public ResponseEntity<List<Review>> getReviewsByBook(@PathVariable UUID bookId) {
-        List<Review> reviews = reviewRepository.findByBookId(bookId);
-        return ResponseEntity.ok(reviews);
+    public ResponseEntity<List<ReviewRecordDto>> getReviewsByBookId(@PathVariable UUID bookId) {
+        List<ReviewRecordDto> reviewDTOs = reviewService.getReviewDTOsByBookId(bookId);
+        return ResponseEntity.ok(reviewDTOs);
     }
+
 }
 
