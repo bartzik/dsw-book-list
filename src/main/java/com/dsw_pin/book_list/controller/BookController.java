@@ -1,14 +1,15 @@
 package com.dsw_pin.book_list.controller;
 
 import com.dsw_pin.book_list.model.Book;
+import com.dsw_pin.book_list.repositories.BookRepository;
 import com.dsw_pin.book_list.services.BookService;
 import com.dsw_pin.book_list.dtos.BookRecordDto;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.List;
 
@@ -17,10 +18,13 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
+    private  final BookRepository bookRepository;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, BookRepository bookRepository) {
         this.bookService = bookService;
+        this.bookRepository = bookRepository;
     }
+
 
     // busca todos os livros
     @GetMapping
@@ -28,16 +32,13 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(bookService.getAllBooks());
     }
 
-    // busca detalhes de um livro específico por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBookDetails(@PathVariable UUID id) {
-        Optional<Book> book = bookService.getBookById(id);
-        if (book.isPresent()) {
-            return ResponseEntity.ok(book.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+    public ResponseEntity<Book> getBookById(@PathVariable UUID id) {
+        Book book = bookRepository.findByIdWithReviews(id) // Usando um método customizado para carregar reviews junto
+                .orElseThrow(() -> new EntityNotFoundException("Livro não encontrado"));
+        return ResponseEntity.ok(book);
     }
+
 
     // salva livros novos
     @PostMapping

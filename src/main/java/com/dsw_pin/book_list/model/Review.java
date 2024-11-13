@@ -2,6 +2,7 @@ package com.dsw_pin.book_list.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -22,12 +23,13 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id") //  chave estrangeira
     @JsonBackReference
-    @JsonIgnore
+//    @JsonIgnore
     private Book book;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonBackReference
+//    @JsonBackReference
+    @JsonIgnore
     private User user;
 
     public Review(String comment, Book book, User user) {

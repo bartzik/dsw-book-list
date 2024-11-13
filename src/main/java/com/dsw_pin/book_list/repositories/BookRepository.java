@@ -10,8 +10,8 @@ import java.util.UUID;
 
 public interface BookRepository extends JpaRepository<Book, UUID> {
 
-//    @Query("SELECT b FROM Book b LEFT JOIN FETCH b.reviews WHERE b.id = :bookId")
-//    Optional<Book> findByIdWithReviews(@Param("bookId") UUID bookId);
+    @Query("SELECT b FROM Book b LEFT JOIN FETCH b.reviews WHERE b.id = :bookId")
+    Optional<Book> findByIdWithReviews(@Param("bookId") UUID bookId);
 
 
 }

@@ -34,7 +34,7 @@ public class Book {
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     @JsonManagedReference
-    @JsonIgnore
+//    @JsonIgnore
     private Set<Review> reviews = new HashSet<>();
 
 

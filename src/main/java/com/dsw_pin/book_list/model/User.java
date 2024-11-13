@@ -1,6 +1,7 @@
 package com.dsw_pin.book_list.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -56,7 +57,8 @@ public class User {
     //um usuario mtas reviews uma review um usuario
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonManagedReference
+//    @JsonManagedReference
+//    @JsonIgnore
     private Set<Review> reviews = new HashSet<>();
 
     public UUID getId() {
