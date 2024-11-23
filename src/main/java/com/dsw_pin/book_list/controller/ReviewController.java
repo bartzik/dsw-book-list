@@ -81,5 +81,14 @@ public class ReviewController {
         return ResponseEntity.ok(reviewDTOs);
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ReviewRecordDto>> getUserReviews(@PathVariable UUID userId) {
+        List<ReviewRecordDto> reviewDTOs = reviewService.getReviewDTOsByUserId(userId);
+        return ResponseEntity.ok(reviewDTOs);
+    }
+
+
+
+
 }
 

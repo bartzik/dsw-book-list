@@ -25,4 +25,11 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
+
+    public List<ReviewRecordDto> getReviewDTOsByUserId(UUID userId) {
+        return reviewRepository.findByUserId(userId).stream()
+                .map(review -> new ReviewRecordDto(review.getComment(), review.getUser().getName()))
+                .collect(Collectors.toList());
+    }
+
 }
