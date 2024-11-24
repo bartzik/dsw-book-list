@@ -26,6 +26,9 @@ public class Book {
     @Column
     private String summary;
 
+    @Column
+    private String photoUrl;
+
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
@@ -102,5 +105,13 @@ public class Book {
 
     public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

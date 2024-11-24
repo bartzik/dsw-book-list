@@ -24,7 +24,7 @@ public class AuthorController {
         return ResponseEntity.ok(authors);
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json")
     public ResponseEntity<Author> createAuthor(@RequestBody Author author) {
         Author savedAuthor = authorRepository.save(author);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedAuthor);

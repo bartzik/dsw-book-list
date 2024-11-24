@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -36,6 +37,12 @@ public class BookController {
     public ResponseEntity<Book> getBookById(@PathVariable UUID id) {
         Book book = bookRepository.findByIdWithReviews(id) // Usando um método customizado para carregar reviews junto
                 .orElseThrow(() -> new EntityNotFoundException("Livro não encontrado"));
+
+        if (book.getPhotoUrl() != null && !book.getPhotoUrl().startsWith("http")) {
+            String baseUrl = "http://localhost:8080"; // Substitua pelo domínio correto, se necessário
+            book.setPhotoUrl(baseUrl + book.getPhotoUrl());
+        }
+
         return ResponseEntity.ok(book);
     }
 
@@ -56,4 +63,16 @@ public class BookController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Livro não encontrado!");
         }
     }
+
+    @PostMapping(value = "/upload", consumes = {"multipart/form-data"})
+    public ResponseEntity<String> uploadPhoto(@RequestParam("file") MultipartFile file) {
+        try {
+            // Chama o serviço para salvar o arquivo e retorna a URL gerada
+            String photoUrl = bookService.savePhoto(file);
+            return ResponseEntity.ok(photoUrl);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao fazer upload da foto: " + e.getMessage());
+        }
+    }
+
 }

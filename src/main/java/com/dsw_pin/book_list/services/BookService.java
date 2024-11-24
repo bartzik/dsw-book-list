@@ -10,7 +10,11 @@ import com.dsw_pin.book_list.dtos.BookRecordDto;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,6 +28,7 @@ public class BookService {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.publisherRepository = publisherRepository;
+
     }
 
     public List<Book> getAllBooks(){
@@ -33,7 +38,6 @@ public class BookService {
     public Optional<Book> getBookById(UUID id){
         return bookRepository.findById(id);
     }
-
 
     @Transactional
     public Book saveBook(BookRecordDto bookRecordDto) {
@@ -58,6 +62,9 @@ public class BookService {
         }
         book.setPublicationYear(bookRecordDto.publicationYear());
 
+        // Adiciona a URL da foto
+        book.setPhotoUrl(bookRecordDto.photoUrl());
+
         return bookRepository.save(book);
     }
 
@@ -65,6 +72,24 @@ public class BookService {
     @Transactional
     public void deleteBook(UUID id){
         bookRepository.deleteById(id);
+    }
+
+    public String savePhoto(MultipartFile file) throws Exception {
+        // Cria um nome único para o arquivo
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        Path uploadPath = Path.of("uploads/"); // Diretório onde as fotos são salvas
+
+        // Cria o diretório se ele não existir
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        // Salva o arquivo no diretório
+        Path filePath = uploadPath.resolve(fileName);
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        // Retorna o caminho relativo ou a URL pública do arquivo
+        return "/uploads/" + fileName;
     }
 
 
