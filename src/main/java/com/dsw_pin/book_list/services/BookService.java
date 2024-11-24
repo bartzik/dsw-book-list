@@ -65,6 +65,9 @@ public class BookService {
         // Adiciona a URL da foto
         book.setPhotoUrl(bookRecordDto.photoUrl());
 
+        book.setSummary(bookRecordDto.summary());
+
+
         return bookRepository.save(book);
     }
 

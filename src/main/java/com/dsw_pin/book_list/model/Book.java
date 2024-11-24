@@ -23,7 +23,7 @@ public class Book {
     @Column(nullable = false)
     private int publicationYear;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String summary;
 
     @Column
