@@ -60,9 +60,16 @@ public class BookController {
             bookService.deleteBook(id);
             return ResponseEntity.status(HttpStatus.OK).body("Livro deletado com sucesso!");
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Livro não encontrado!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erro ao excluir o livro!");
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Book> updateBook(@PathVariable UUID id, @RequestBody BookRecordDto bookRecordDto) {
+        Book updatedBook = bookService.updateBook(id, bookRecordDto);
+        return ResponseEntity.ok(updatedBook);
+    }
+
 
     @PostMapping(value = "/upload", consumes = {"multipart/form-data"})
     public ResponseEntity<String> uploadPhoto(@RequestParam("file") MultipartFile file) {
@@ -74,5 +81,12 @@ public class BookController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao fazer upload da foto: " + e.getMessage());
         }
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Book>> searchBooks(@RequestParam String query) {
+        List<Book> books = bookService.searchBooks(query);
+        return ResponseEntity.ok(books);
+    }
+
 
 }

@@ -95,5 +95,38 @@ public class BookService {
         return "/uploads/" + fileName;
     }
 
+    @Transactional
+    public List<Book> searchBooks(String query) {
+        return bookRepository.searchBooks(query);
+    }
+
+    @Transactional
+    public Book updateBook(UUID id, BookRecordDto bookRecordDto) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Livro não encontrado"));
+
+        // Atualiza os campos do livro
+        book.setTitle(bookRecordDto.title());
+        book.setPublicationYear(bookRecordDto.publicationYear());
+        book.setSummary(bookRecordDto.summary());
+        book.setPhotoUrl(bookRecordDto.photoUrl());
+
+        // Atualiza a editora se necessário
+        Publisher publisher = publisherRepository.findById(bookRecordDto.publisherId())
+                .orElseThrow(() -> new EntityNotFoundException("Editora não encontrada."));
+        book.setPublisher(publisher);
+
+        // Atualiza os autores
+        Set<Author> authors = new HashSet<>(authorRepository.findAllById(bookRecordDto.authorIds()));
+        if (authors.isEmpty()) {
+            throw new EntityNotFoundException("Nenhum autor encontrado com os IDs fornecidos.");
+        }
+        book.setAuthors(authors);
+
+        return bookRepository.save(book);
+    }
+
+
+
 
 }
