@@ -73,9 +73,13 @@ public class BookService {
 
 
     @Transactional
-    public void deleteBook(UUID id){
+    public void deleteBook(UUID id) {
+        if (!bookRepository.existsById(id)) {
+            throw new EntityNotFoundException("Livro não encontrado para exclusão.");
+        }
         bookRepository.deleteById(id);
     }
+
 
     public String savePhoto(MultipartFile file) throws Exception {
         // Cria um nome único para o arquivo
