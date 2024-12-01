@@ -75,7 +75,7 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Email já está em uso.");
         }
 
-        // Verifica o comprimento da senha (já que não temos `confirmPassword` aqui)
+        // Verifica o comprimento da senha
         if (userRecordDto.password().length() < 6) {
             return ResponseEntity.badRequest().body("A senha deve ter pelo menos 6 caracteres.");
         }
